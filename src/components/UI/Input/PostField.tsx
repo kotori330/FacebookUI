@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PostModal from "../../Modal/PostModal";
+import PostModal from "../../Modal/CreatePostModal";
 
 const PostField = () => {
   const [open, setOpen] = useState(false);
