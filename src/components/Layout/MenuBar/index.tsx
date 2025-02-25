@@ -58,7 +58,7 @@ const MenuBar = () => {
 
   return (
     <>
-      <div id="menu_bar_upper" className="menubar">
+      <div id="menu_bar_upper" className="menubar hidden lg:grid">
         <div className="menubar__button">
           <div className="bg-gray-400 h-12 w-12 rounded-full "></div>
 
@@ -88,7 +88,7 @@ const MenuBar = () => {
 
       <div className="border border-slate-400 w-full"></div>
 
-      <div id="menu-bar-lower" className="menubar">
+      <div id="menu-bar-lower" className="menubar hidden lg:grid">
         <div className="flex justify-between group">
           <span className="font-bold text-xl my-auto py-2">Your shortcuts</span>
           <span className="text-blue-500 hover:cursor-pointer hover:bg-gray-200/70 py-2 px-4 rounded-xl group-hover:block hidden">

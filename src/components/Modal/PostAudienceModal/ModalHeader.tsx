@@ -1,14 +1,14 @@
 const ModalHeader = ({
-  closeSetAudienceModal,
+  toggleSetAudienceModal,
 }: {
-  closeSetAudienceModal: () => void;
+  toggleSetAudienceModal: () => void;
 }) => {
   return (
     <>
       <div className="flex mb-2">
         <button
-          className="rounded-full bg-gray-300/50 hover:bg-gray-300/90 hover:cursor-pointer p-2"
-          onClick={closeSetAudienceModal}
+          className="rounded-full bg-gray-300/50 hover:bg-gray-300/90 hover:cursor-pointer px-2 py-1 "
+          onClick={toggleSetAudienceModal}
         >
           &#8592;
         </button>

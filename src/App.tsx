@@ -13,10 +13,10 @@ const App = () => {
         <div className="w-1/5 flex-shrink-0 overflow-auto h-[56rem] fixed my-19">
           <MenuBar />
         </div>
-        <div className="w-full flex-grow mx-56 px-72  my-19">
+        <div className="w-full flex-grow  lg:mx-56 lg:px-72 lg:my-19">
           <Content />
         </div>
-        <div className="w-full overflow-scroll h-[56rem] fixed mx-[93rem]  my-19">
+        <div className="w-1/5 overflow-scroll h-[56rem] invisible lg:visible fixed right-0 my-19">
           <Contact />
         </div>
       </div>

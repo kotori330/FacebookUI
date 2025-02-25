@@ -1,11 +1,9 @@
 const navBarBtns = () => {
   return (
-    <ul className="flex space-x-14 items-center relative mr-6">
-      <li className="navbar__button navbar__button--active">Home</li>
-      <li className="navbar__button">Play</li>
-      <li className="navbar__button">Marketplace</li>
-      <li className="navbar__button">Groups</li>
-      <li className="navbar__button">Games</li>
+    <ul className="hidden space-x-14 items-center relative mr-6 lg:flex">
+      {['Home', 'Play', 'Marketplace', 'Groups', 'Games'].map((item, index) => (
+        <li key={index} className={`navbar__button ${item === 'Home' ? 'navbar__button--active' : ''}`}>{item}</li>
+      ))}
       <div className="absolute top-16 w-22 h-1 rounded-4xl bg-blue-300 "></div>
     </ul>
   );
