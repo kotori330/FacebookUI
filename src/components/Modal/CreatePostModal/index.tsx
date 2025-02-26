@@ -7,9 +7,11 @@ import TagPeopleModal, { Tagged } from "../TagPeopleModal.tsx";
 import SetFeelingModal from "../SetFeelingModal/index.tsx";
 
 const PostModal = ({ closeModal }: { closeModal: () => void }) => {
+  const [dropzone, setDropzone] = useState(false)
   const [audience, setAudience] = useState("Public");
   const [audienceDescription, setAudienceDescription] =
     useState("Anyone on Facebook");
+    const [feeling, setFeeling] = useState("")
   const [openSetAudience, setOpenSetAudience] = useState(false);
   const [openTagPeopleToPost, setopenTagPeopleToPost] = useState(false);
   const [taggedPeople, setTaggedPeople] = useState([] as Tagged[]);
@@ -29,10 +31,19 @@ const PostModal = ({ closeModal }: { closeModal: () => void }) => {
     toggleSetAudienceModal();
   };
 
-  const addPhotoToPost = () => {};
+  const toggleDropzone = () => {
+    setDropzone(prev => !prev)
+  };
+
   const toggleSetFeelingToPostModal = () => {
     setOpenSetFeelingToPostModal((prev) => !prev);
   };
+  
+  const handleSetFeeling = (itemName: string) => {
+    setFeeling(itemName.toLowerCase())
+    toggleSetFeelingToPostModal();
+  }
+
   const handlePost = () => {};
 
   return (
@@ -41,12 +52,14 @@ const PostModal = ({ closeModal }: { closeModal: () => void }) => {
         <div className="bg-white rounded-lg w-full max-w-lg p-4 relative">
           <ModalHeader closeModal={closeModal} />
           <ModalContent
+          dropzone={dropzone}
             audience={audience}
             audienceDescription={audienceDescription}
             taggedPeople={taggedPeople}
+            feeling={feeling}
             toggleSetAudienceModal={toggleSetAudienceModal}
             toggleTagPeopleModal={toggleTagPeopleModal}
-            addPhotoToPost={addPhotoToPost}
+            toggleDropzone={toggleDropzone}
             toggleSetFeelingToPostModal={toggleSetFeelingToPostModal}
             handlePost={handlePost}
           />
@@ -66,6 +79,7 @@ const PostModal = ({ closeModal }: { closeModal: () => void }) => {
       {openSetFeelingToPostModal && (
         <SetFeelingModal
           toggleSetFeelingToPostModal={toggleSetFeelingToPostModal}
+          handleSetFeeling={handleSetFeeling}
         />
       )}
     </>

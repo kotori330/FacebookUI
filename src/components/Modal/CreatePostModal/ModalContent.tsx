@@ -2,25 +2,30 @@ import { useState } from "react";
 import { listContact } from "../../../services/staticData";
 import { cn } from "../../../utils/clsx";
 import { Tagged } from "../TagPeopleModal.tsx";
+import { ImageVideoDropzone } from "../../UI/Dropzone/PostImageDropzone.tsx";
 
 const ModalContent = ({
   toggleSetAudienceModal,
-  addPhotoToPost,
+  toggleDropzone,
   toggleTagPeopleModal,
   toggleSetFeelingToPostModal,
+  dropzone,
   audience,
   audienceDescription,
+  feeling,
   taggedPeople,
-  handlePost
+  handlePost,
 }: {
   toggleSetAudienceModal: () => void;
   toggleTagPeopleModal: () => void;
-  addPhotoToPost: () => void;
+  toggleDropzone: () => void;
   toggleSetFeelingToPostModal: () => void;
+  dropzone: boolean;
   audience: string;
   audienceDescription: string;
+  feeling: string;
   taggedPeople: Tagged[];
-  handlePost: () => void
+  handlePost: () => void;
 }) => {
   const [postContext, setPostContext] = useState("");
   const [, , thirdContact] = listContact;
@@ -28,7 +33,7 @@ const ModalContent = ({
   const icon = [
     {
       iconName: "gallery",
-      usage: addPhotoToPost,
+      usage: toggleDropzone,
     },
     {
       iconName: "taguser",
@@ -49,19 +54,31 @@ const ModalContent = ({
           className="w-12 h-12 rounded-full"
         />
         <div className="auto-rows-auto relative">
+          {/* Account name */}
           <span className="font-bold">{thirdContact.name} </span>
-          {/* tag people */}
+          {/* Status */}
+          {(feeling !== "" || taggedPeople.length !== 0) && <span> is </span>}
+          {/* Feeling */}
+          {feeling !== "" && (
+            <>
+              <span>
+                {" "}
+                feeling <b>{feeling} </b>
+              </span>
+            </>
+          )}
+          {/* Tag people */}
           {taggedPeople.length === 1 && (
             <>
               <span>
-                is with{" "}<b>{taggedPeople[0].name}</b>
+                with <b>{taggedPeople[0].name}</b>
               </span>
             </>
           )}
           {taggedPeople.length === 2 && (
             <>
               <span>
-                is with{" "}<b>{taggedPeople[0].name}</b>{" "}and{" "}
+                with <b>{taggedPeople[0].name}</b> and{" "}
                 <b>{taggedPeople[1].name}</b>
               </span>
             </>
@@ -69,7 +86,7 @@ const ModalContent = ({
           {taggedPeople.length > 2 && (
             <>
               <span>
-                is with{" "}
+                with{" "}
                 <b>
                   {taggedPeople
                     .slice(0, -1) // Omit the last element
@@ -82,6 +99,7 @@ const ModalContent = ({
             </>
           )}
           {/*  */}
+
           <button
             className="px-2 rounded-md bg-gray-400/50 font-bold flex hover:cursor-pointer"
             onMouseEnter={(e) => {
@@ -116,6 +134,13 @@ const ModalContent = ({
           }}
         />
       </div>
+
+      {/* Dropzone */}
+      {dropzone && (
+        <>
+          <ImageVideoDropzone className="p-12" toggleDropzone={toggleDropzone} />
+        </>
+      )}
 
       {/* Button for options */}
       <div className="border border-slate-300/50 shadow-sm rounded-2xl flex justify-between items-center p-4">
