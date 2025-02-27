@@ -1,10 +1,13 @@
-import { useState } from "react";
+
 import { listContact } from "../../../services/staticData";
 import { cn } from "../../../utils/clsx";
 import { Tagged } from "../TagPeopleModal.tsx";
 import { ImageVideoDropzone } from "../../UI/Dropzone/PostImageDropzone.tsx";
+import { PostData } from "../../Layout/Content/index.tsx";
 
 const ModalContent = ({
+  postContext,
+  setPostContext,
   toggleSetAudienceModal,
   toggleDropzone,
   toggleTagPeopleModal,
@@ -14,8 +17,11 @@ const ModalContent = ({
   audienceDescription,
   feeling,
   taggedPeople,
-  handlePost,
+  handlePostCreate,
+  closeModal
 }: {
+  postContext: string;
+setPostContext: (text: string) => void;
   toggleSetAudienceModal: () => void;
   toggleTagPeopleModal: () => void;
   toggleDropzone: () => void;
@@ -25,9 +31,10 @@ const ModalContent = ({
   audienceDescription: string;
   feeling: string;
   taggedPeople: Tagged[];
-  handlePost: () => void;
+  handlePostCreate: (postData: PostData) => void;
+  closeModal: () => void;
 }) => {
-  const [postContext, setPostContext] = useState("");
+  
   const [, , thirdContact] = listContact;
 
   const icon = [
@@ -122,28 +129,40 @@ const ModalContent = ({
         </div>
       </div>
 
-      {/* Input field */}
-      <div className="mt-4">
-        <input
-          type="text"
-          placeholder="What's on your mind?"
-          className="outline-none w-full pb-12 break-words whitespace-pre-wrap max-w-full "
-          value={postContext}
-          onChange={(e) => {
-            setPostContext(e.target.value);
-          }}
-        />
+      <div className="h-full max-h-[42rem] overflow-auto">
+        {/* Input field */}
+        <div className="mt-4">
+          <textarea
+            placeholder="What's on your mind?"
+            className="outline-none w-full pb-12 break-words whitespace-pre-wrap max-w-full resize-none overflow-hidden"
+            value={postContext}
+            onChange={(e) => {
+              setPostContext(e.target.value);
+              // Make height flexible
+              e.target.style.height = "auto";
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
+            style={{ height: "auto" }}
+          />
+        </div>
+
+        {/* Dropzone */}
+        {dropzone && (
+          <>
+            <div className="border border-slate-300/50 shadow-sm rounded-2xl flex justify-between items-center p-4 my-2 relative">
+              <span
+                className="rounded-full border-slate-400/80 border bg-white hover:cursor-pointer hover:bg-slate-200 text-2xl px-2 m-2 absolute right-4 top-4 z-100"
+                onClick={toggleDropzone}
+              >
+                &times;
+              </span>
+              <ImageVideoDropzone className="p-12 bg-slate-200/20 rounded-2xl w-full   hover:bg-slate-200/90 hover:cursor-pointer relative" />
+            </div>
+          </>
+        )}
       </div>
-
-      {/* Dropzone */}
-      {dropzone && (
-        <>
-          <ImageVideoDropzone className="p-12" toggleDropzone={toggleDropzone} />
-        </>
-      )}
-
       {/* Button for options */}
-      <div className="border border-slate-300/50 shadow-sm rounded-2xl flex justify-between items-center p-4">
+      <div className="border border-slate-300/50 shadow-sm rounded-2xl flex justify-between items-center p-4 mt-4">
         <span className="font-bold">Add to your post</span>
         <div className="flex">
           {icon.map((item) => (
@@ -171,12 +190,29 @@ const ModalContent = ({
           "text-gray-400",
           "mt-4",
           {
-            "!bg-blue-500 text-white hover:cursor-pointer hover:opacity-70":
-              postContext,
+        "!bg-blue-500 text-white hover:cursor-pointer hover:opacity-70":
+          postContext,
           }
         )}
         disabled={!postContext}
-        onClick={handlePost}
+        onClick={() => {
+          handlePostCreate({
+            user: thirdContact.name,
+            avatar: thirdContact.avatar,
+            feeling,
+            taggedPeople: taggedPeople.map((person) => ({ id: person.id, name: person.name })),
+            audience: audience,
+            time: new Date().toISOString(),
+            context: postContext,
+            preview: "",
+            imageName: "",
+            likes: "0",
+            comments: "0",
+            shares: "0",
+          });
+          closeModal();
+          setPostContext("")
+        }}
       >
         Post
       </button>
